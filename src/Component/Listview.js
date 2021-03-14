@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import { Card, Navbar, Nav, Form,FormControl,  Button, NavDropdown } from 'react-bootstrap';
+import { Card, Navbar, Nav, Form, FormControl, Button, NavDropdown } from 'react-bootstrap';
 import LazyLoad from 'react-lazyload';
+import { AiOutlineCalendar } from 'react-icons/ai';
+import moment from 'moment'
 
 class ListView extends Component {
     constructor(props) {
         super(props);
         this.state = {
             data: [],
-            source:'',
-            text:''
+            source: '',
+            text: ''
         }
     }
 
@@ -35,46 +37,51 @@ class ListView extends Component {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
                             <NavDropdown title="Source" id="basic-nav-dropdown">
-                                <div style={{height:300, overflowY:'scroll'}}>
-                                {this.state.data.map((item,index)=>
-                                    <NavDropdown.Item key={index} style={{zIndex:100}} onClick={()=>{this.setState({source:item.source.name})}} value={item.source.name}>{item.source.name}</NavDropdown.Item>
-                                )}</div>
+                                <div style={{ height: 300, overflowY: 'scroll' }}>
+                                    {this.state.data.map((item, index) =>
+                                        <NavDropdown.Item key={index} style={{ zIndex: 100 }} onClick={() => { this.setState({ source: item.source.name }) }} value={item.source.name}>{item.source.name}</NavDropdown.Item>
+                                    )}</div>
                             </NavDropdown>
                         </Nav>
                         <Form inline>
-                            <FormControl type="text" onChange={(e)=>this.setState({text:e.target.value})} placeholder="Search" className="mr-sm-2" />
+                            <FormControl type="text" disabled defaultValue={'Pramod Ray'} placeholder="Search" className="mr-sm-2" />
                             <Button variant="outline-success">Search</Button>
                         </Form>
                     </Navbar.Collapse>
                 </Navbar>
-                <LazyLoad height={500} offset={200} once>
-                <div className='container App'>
-                    <div className='row col-12'>
-                    
-                    {this.state.data.filter(item=>{
-                            return item.source.name.includes(this.state.source) 
-                            || item.source.name.includes(this.state.text)
-                            
+                <LazyLoad height={500} offset={200} once={true}>
+                    <div className='container App'>
+                        <div className='row col-12'>
 
-                        }).map((item, index) =>
-                            <Card className='col-md-5 col-sm-6 col-lg-5 m-4' style={{ width: '18rem' }} key={index}>
-                                <a href={item.url}><Card.Img variant="top" src={item.urlToImage} /></a>
-                                
-                                <Card.Body>
-                                    <Card.Title>{item.title}</Card.Title>
-                                    {item.description}
-                                </Card.Body>
-                                
-                                
-                            </Card>
-                        )}
-     
-                       
+                            {this.state.data.filter(item => {
+                                return item.source.name.includes(this.state.source)
 
+
+
+                            }).map((item, index) =>
+                                <Card className='col-md-5 col-sm-6 col-lg-5 m-4' style={{ width: '18rem' }} key={index}>
+                                    <a href={item.url}><Card.Img variant="top" src={item.urlToImage} /></a>
+
+                                    <Card.Body>
+                                        <div className='row my-2 d-flex justify-content-between'>
+                                            <div> 
+                                                <span><AiOutlineCalendar /></span>
+                                                <span className='ml-2 mt-1'>{moment(item.publishedAt).format('MMMM Do YYYY HH:mm')}</span>
+                                            </div>
+                                            <span> Author : {item.author}</span>
+                                        </div>
+                                        <Card.Title><a href={item.url}>{item.title}</a></Card.Title>
+                                        {item.description}
+                                    </Card.Body>
+                                </Card>
+                            )}
+
+
+
+
+                        </div>
 
                     </div>
-
-                </div>
                 </LazyLoad>
             </div>
         )
