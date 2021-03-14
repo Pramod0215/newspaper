@@ -3,7 +3,7 @@
  
  clone repo
  ```
- git clone:
+ git clone: https://github.com/Pramod0215/newspaper.git
  ```
  Go app directory install dependancy
  ```
